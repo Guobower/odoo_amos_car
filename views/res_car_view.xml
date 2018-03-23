@@ -1,0 +1,112 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+    <record model="ir.ui.view" id="amos_car.list">
+      <field name="name">amos_car list</field>
+      <field name="model">amos_car.amos_car</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="active"/>
+          <field name="instructor"/>
+          <field name="date"/>
+          <field name="date_order"/>
+        </tree>
+      </field>
+    </record>
+
+
+    <record model="ir.ui.view" id="view_form_res_car">
+      <field name="name">res.car.form</field>
+      <field name="model">amos_car.amos_car</field>
+      <field name="arch" type="xml">
+        <form string="窗体名称">
+          <header>
+            <button name="action_amos" states="draft" type="object" string="测试"/>
+            <button name="action_amos_create" states="draft" type="object" string="创建amos"/>
+            <button name="action_amos_update" states="draft" type="object" string="修改amos"/>
+            <button name="action_amos_browse" states="draft" type="object" string="浏览amos"/>
+            <button name="action_review" states="draft" type="object" string="提交审核"/>
+            <!--<button name="action_done" states="review,cancel" type="object" string="审核"/>-->
+            <!--<button name="action_cancel" states="done" type="object" string="取消"/>-->
+            <!--<button name="action_draft" states="review,done,cancel" type="object" string="转成草稿"/>-->
+            <field name="state" widget="statusbar" statusbar_visible="draft,review,done,cancel" class="oe_right"></field>
+          </header>
+          <sheet>
+            <group>
+               <group>
+                 <field name="code" readonly="1"/>
+                 <field name="name"/><!--required="1" -->
+                 <field name="instructor"/>
+                 <field name="total"/>
+                 <field name="active" readonly="1"/>
+                 <field name="date"/>
+                 <field name="date_order"/>
+               </group>
+               <group>
+                 <field name="qty"></field>
+                 <field name="list_price"></field>
+                 <field name="sex"></field>
+                 <field name="user_id"></field>
+                 <field name="partner_ids"></field>
+                 <field name="partner_idss"></field>
+                 <field name="function"></field>
+               </group>
+            </group>
+            <field name="lines">
+              <tree string="List" editable="bottom">
+              <field name="sequence" widget="handle"></field>
+              <field name="name"></field>
+              <field name="price"></field>
+            </tree>
+            </field>
+            <field name="note" widget="html"></field>
+            <field name="content" widget="html"></field>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="amos_car.action_window">
+      <field name="name">amos_car window</field>
+      <field name="res_model">amos_car.amos_car</field>
+      <field name="arch" type="xml">
+        <field name="name" required="1"/>
+      </field>
+    </record>
+
+
+    <!-- server action to the one above -->
+
+    <record model="ir.actions.server" id="amos_car.action_server">
+      <field name="name">amos_car server</field>
+      <field name="model_id" ref="model_amos_car_amos_car"/>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": self._name,
+        }
+      </field>
+    </record>
+
+
+    <!-- Top menu item -->
+
+    <menuitem name="车辆管理" id="amos_car.menu_root"/>
+
+    <!-- menu categories -->
+
+    <menuitem name="Menu 1" id="amos_car.menu_1" parent="amos_car.menu_root"/>
+    <menuitem name="Menu 2" id="amos_car.menu_2" parent="amos_car.menu_root"/>
+
+    <!-- actions -->
+
+    <menuitem name="List" id="amos_car.menu_1_list" parent="amos_car.menu_1"
+              action="amos_car.action_window"/>
+
+  </data>
+</odoo>
